@@ -1,8 +1,9 @@
 import pygame
-from platform import Platform
+from game_platform import Platform
 from enemy import Enemy
 from collectible import Collectible
 from flag import Flag
+
 
 class Level:
     def __init__(self, level_num, screen_width, screen_height):
@@ -13,107 +14,64 @@ class Level:
         self.enemies = []
         self.collectibles = []
         self.end_flag = None
-        
         self.create_level()
-    
+
+    def add_platform(self, x, y, width, color=(133, 91, 62)):
+        self.platforms.append(Platform(x, y, width, 18, color))
+
     def create_level(self):
+        ground = Platform(0, 550, self.screen_width, 50, (71, 145, 83))
+        self.platforms.append(ground)
         if self.level_num == 1:
             self.create_level_1()
         elif self.level_num == 2:
             self.create_level_2()
-        elif self.level_num == 3:
+        else:
             self.create_level_3()
-    
+        self.end_flag = Flag(1125, 490)
+
     def create_level_1(self):
-        # Ground
-        self.platforms.append(Platform(0, 550, 1200, 50, (34, 139, 34)))
-        
-        # Platforms
-        self.platforms.append(Platform(200, 450, 150, 20, (139, 69, 19)))
-        self.platforms.append(Platform(450, 400, 150, 20, (139, 69, 19)))
-        self.platforms.append(Platform(700, 350, 150, 20, (139, 69, 19)))
-        self.platforms.append(Platform(950, 300, 150, 20, (139, 69, 19)))
-        
-        # Enemies
-        self.enemies.append(Enemy(250, 410, 200, 500))
-        self.enemies.append(Enemy(500, 360, 450, 600))
-        self.enemies.append(Enemy(750, 310, 700, 900))
-        
-        # Collectibles
-        self.collectibles.append(Collectible(220, 420, 10))
-        self.collectibles.append(Collectible(470, 370, 10))
-        self.collectibles.append(Collectible(720, 320, 10))
-        self.collectibles.append(Collectible(970, 270, 10))
-        
-        # End flag
-        self.end_flag = Flag(1100, 520)
-    
+        # The stepping stones stay within a comfortable jump range and lead to the first secret.
+        for x, y, width in ((190, 470, 145), (410, 410, 145), (640, 350, 145), (865, 410, 130)):
+            self.add_platform(x, y, width)
+        self.enemies.extend((Enemy(280, 522, 220, 390), Enemy(460, 382, 420, 535),
+                             Enemy(700, 322, 650, 770, "hopper")))
+        self.collectibles.extend((Collectible(235, 440, 10), Collectible(455, 380, 10),
+                                  Collectible(685, 320, 10), Collectible(910, 380, 10),
+                                  Collectible(1040, 510, 10), Collectible(590, 510, 25, "heart")))
+
     def create_level_2(self):
-        # Ground
-        self.platforms.append(Platform(0, 550, 1200, 50, (34, 139, 34)))
-        
-        # More challenging platforms
-        self.platforms.append(Platform(100, 480, 100, 20, (139, 69, 19)))
-        self.platforms.append(Platform(250, 430, 100, 20, (139, 69, 19)))
-        self.platforms.append(Platform(400, 380, 100, 20, (139, 69, 19)))
-        self.platforms.append(Platform(550, 330, 100, 20, (139, 69, 19)))
-        self.platforms.append(Platform(700, 280, 100, 20, (139, 69, 19)))
-        self.platforms.append(Platform(850, 230, 100, 20, (139, 69, 19)))
-        self.platforms.append(Platform(1000, 280, 100, 20, (139, 69, 19)))
-        
-        # More enemies
-        self.enemies.append(Enemy(120, 440, 100, 200))
-        self.enemies.append(Enemy(270, 390, 250, 400))
-        self.enemies.append(Enemy(420, 340, 400, 550))
-        self.enemies.append(Enemy(570, 290, 550, 700))
-        self.enemies.append(Enemy(870, 190, 850, 950))
-        
-        # Collectibles
-        for i in range(7):
-            x = 150 + i * 150
-            y = 480 - i * 50
+        self.add_platform(100, 475, 125)
+        self.add_platform(285, 420, 115)
+        self.add_platform(470, 365, 115)
+        self.add_platform(665, 310, 115)
+        self.add_platform(855, 365, 125)
+        self.add_platform(1010, 455, 100)
+        self.enemies.extend((Enemy(145, 447, 100, 225, speed=2),
+                             Enemy(490, 337, 470, 585, "hopper", 1.8),
+                             Enemy(880, 337, 855, 980, speed=2.2)))
+        for x, y in ((145, 445), (330, 390), (515, 335), (710, 280), (900, 335), (1050, 425)):
             self.collectibles.append(Collectible(x, y, 15))
-        
-        # End flag
-        self.end_flag = Flag(1100, 520)
-    
+        self.collectibles.append(Collectible(570, 500, 35, "star"))
+
     def create_level_3(self):
-        # Ground
-        self.platforms.append(Platform(0, 550, 1200, 50, (34, 139, 34)))
-        
-        # Challenging level
-        self.platforms.append(Platform(100, 480, 80, 20, (139, 69, 19)))
-        self.platforms.append(Platform(220, 430, 80, 20, (139, 69, 19)))
-        self.platforms.append(Platform(340, 380, 80, 20, (139, 69, 19)))
-        self.platforms.append(Platform(460, 330, 80, 20, (139, 69, 19)))
-        self.platforms.append(Platform(580, 280, 80, 20, (139, 69, 19)))
-        self.platforms.append(Platform(700, 230, 80, 20, (139, 69, 19)))
-        self.platforms.append(Platform(820, 280, 80, 20, (139, 69, 19)))
-        self.platforms.append(Platform(940, 330, 80, 20, (139, 69, 19)))
-        
-        # Many enemies
-        for i in range(8):
-            x = 100 + i * 120
-            y = 440 - (i % 3) * 50
-            self.enemies.append(Enemy(x, y, x - 50, x + 200))
-        
-        # Many collectibles
-        for i in range(8):
-            x = 130 + i * 120
-            y = 450 - (i % 3) * 50
+        # A rising route, a safe lower route, and a final gap make dash useful but not mandatory.
+        for x, y, width in ((115, 480, 105), (285, 425, 100), (445, 370, 100),
+                            (605, 315, 100), (765, 370, 100), (925, 425, 105), (1060, 480, 85)):
+            self.add_platform(x, y, width, (115, 79, 105))
+        self.enemies.extend((Enemy(145, 452, 115, 220, "hopper", 2.0),
+                             Enemy(470, 342, 445, 545, speed=2.4),
+                             Enemy(790, 342, 765, 865, "hopper", 2.2),
+                             Enemy(950, 397, 925, 1030, speed=2.5)))
+        for x, y in ((145, 450), (315, 395), (475, 340), (635, 285), (795, 340), (955, 395)):
             self.collectibles.append(Collectible(x, y, 20))
-        
-        # End flag
-        self.end_flag = Flag(1100, 520)
-    
+        self.collectibles.extend((Collectible(550, 510, 50, "star"), Collectible(1080, 450, 25, "heart")))
+
     def draw(self, screen):
         for platform in self.platforms:
             platform.draw(screen)
-        
-        for enemy in self.enemies:
-            enemy.draw(screen)
-        
         for collectible in self.collectibles:
             collectible.draw(screen)
-        
+        for enemy in self.enemies:
+            enemy.draw(screen)
         self.end_flag.draw(screen)
