@@ -1,93 +1,31 @@
-# Mario-Like Platformer Game
+# Mosslight: The Lost Garden
 
-A fun 2D platformer game built with Python and Pygame, inspired by the classic Mario games!
+A small, asset-free Python/Pygame platform game. Restore three overgrown groves by reaching each banner, collecting luminous seeds, and outsmarting the garden creatures.
 
-## Features
-
-✨ **Gameplay Features:**
-- Player character with smooth movement and jumping mechanics
-- Multiple levels (3 levels included) with increasing difficulty
-- Enemies that patrol and can be defeated by jumping on them
-- Collectible items to earn points
-- Lives system - you start with 3 lives
-- Score tracking throughout the game
-- End flag to complete each level
-
-## Installation
-
-1. Make sure you have Python 3.7+ installed
-2. Install Pygame:
-   ```bash
-   pip install pygame
-   ```
-3. Clone or download this repository
-
-## How to Play
+## Run
 
 ```bash
+python -m pip install pygame
 python main.py
 ```
 
-### Controls
+## Controls
 
 | Key | Action |
-|-----|--------|
-| ← → | Move Left/Right |
-| SPACE | Jump |
-| R | Restart Current Level |
-| N | Next Level (after game over or level complete) |
+| --- | --- |
+| A/D or ←/→ | Move |
+| Space, W, or ↑ | Jump (short jump buffering and coyote time make controls forgiving) |
+| Shift | Short dash; recharges automatically |
+| R | Restart the current level; on game over/victory, start a new run |
 
-### Game Mechanics
+## Play features
 
-- **Movement**: Use arrow keys to move left and right
-- **Jumping**: Press space to jump. Jump on platforms to reach higher areas
-- **Enemies**: Jump on enemies from above to defeat them and earn 100 points
-- **Collectibles**: Collect gold coins to earn points (10-20 points each)
-- **Lives**: You have 3 lives. Touching an enemy from the side loses a life. Falling off the screen also costs a life
-- **Levels**: Reach the red flag at the end of each level to advance
+- Three hand-built stages with distinct routes, optional rewards, safer lower paths, and increasing enemy variety.
+- Walker and hopping creatures patrol platform-sized boundaries; a stomp from above defeats them.
+- Seeds award score; every tenth seed grants a life. Hearts restore a life (up to five), and stars grant temporary invulnerability.
+- A small dash helps cross gaps; it recharges automatically. Enemy contact and falling cost a life and briefly protect the player after respawn.
+- Handmade character, enemy, collectible, flag, and layered background graphics require no external assets.
 
-## Game Structure
+## Project files
 
-- `main.py` - Entry point for the game
-- `game.py` - Main game loop and logic
-- `player.py` - Player class with movement and physics
-- `enemy.py` - Enemy class with AI patrol behavior
-- `platform.py` - Platform class for level geometry
-- `collectible.py` - Collectible items class
-- `flag.py` - End level flag class
-- `level.py` - Level management and creation
-- `ui.py` - User interface and HUD
-
-## Level Progression
-
-### Level 1
-Introductory level with basic platforms and a few enemies. Good for learning controls.
-
-### Level 2
-More challenging with narrow platforms and more enemies. Requires better timing and precision.
-
-### Level 3
-Final level with many enemies and tight platforming. Can you beat it?
-
-## Customization
-
-You can easily customize the game:
-
-- **Add more levels**: Edit `level.py` and add `create_level_4()` methods
-- **Change player speed**: Modify `Player.speed` in `player.py`
-- **Adjust jump height**: Modify `Player.jump_power` in `player.py`
-- **Change colors**: Edit the color tuples in each class (RGB format)
-- **Modify difficulty**: Adjust enemy speed, platform placement, and collectible values
-
-## Requirements
-
-- Python 3.7+
-- Pygame 2.0+
-
-## License
-
-Free to use and modify!
-
-## Have Fun! 🎮
-
-Enjoy the game and feel free to extend it with your own features!
+`main.py` starts the game; `game.py` owns the loop and progression; `player.py`, `enemy.py`, `collectible.py`, and `game_platform.py` contain gameplay actors; `level.py` defines stages; `ui.py` draws the HUD and end screens.
